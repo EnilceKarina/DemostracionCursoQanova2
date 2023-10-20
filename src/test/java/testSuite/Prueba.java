@@ -7,6 +7,9 @@ import org.testng.annotations.BeforeTest;
 import org.testng.annotations.Test;
 import testClass.BusquedaAnimalesGoogle;
 import testClass.Logeo;
+import utils.Constants.Navegador;
+import utils.DriverContext;
+import utils.Reporte.PdfQaNovaReports;
 
 import java.text.ParseException;
 
@@ -15,24 +18,19 @@ public class Prueba {
     String url = "http://www.qanovagroup.com/piloto";
     @BeforeTest
     public void setUp(){
-        System.setProperty("webdriver.chrome.driver","driverNavegador/chromedriver");
-        webDriver = new ChromeDriver();
-        webDriver.get(url);
+        DriverContext.setUp(Navegador.Chrome,url);
+        PdfQaNovaReports.createPDF();
     }
     @AfterTest
     public void closeDriver(){
-       //webDriver.close();
-    }
-
-    @Test
-    public void buscarPerroGoogle(){
-        BusquedaAnimalesGoogle busquedaAnimalesGoogle = new BusquedaAnimalesGoogle();
-        busquedaAnimalesGoogle.busquedaPerro(webDriver);
+       // DriverContext.closeDriver();
+        PdfQaNovaReports.closePDF();
     }
     @Test
     public void pruebaLogin() throws ParseException {
-        Logeo logeo = new Logeo(webDriver);
+        Logeo logeo = new Logeo();
         logeo.CasoLogin1("nvivas","qanova");
+        PdfQaNovaReports.closePDF();
     }
 
 }
